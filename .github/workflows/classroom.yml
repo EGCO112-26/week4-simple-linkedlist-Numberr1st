@@ -1,0 +1,61 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: run
+      id: run
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: run
+        setup-command: gcc main.c
+        command: "./a.out"
+        timeout: 10
+        max-score: 5
+    - name: tes2
+      id: tes2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: tes2
+        setup-command: gcc main.c
+        command: "./a.out 1234 DIDI 135 DODO 165 DODU"
+        input: ''
+        expected-output: |-
+          1234 DIDI
+          135 DODO
+          165 DODU
+        comparison-method: contains
+        timeout: 10
+        max-score: 10
+    - name: Test
+      id: test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test
+        setup-command: gcc main.c -o test
+        command: "./test 6613266 Gatuex 6613269 Ozone"
+        input: ''
+        expected-output: |-
+          6613266 Gatuex
+          6613269 Ozone
+        comparison-method: contains
+        timeout: 10
+        max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        RUN_RESULTS: "${{steps.run.outputs.result}}"
+        TES2_RESULTS: "${{steps.tes2.outputs.result}}"
+        TEST_RESULTS: "${{steps.test.outputs.result}}"
+      with:
+        runners: run,tes2,test
