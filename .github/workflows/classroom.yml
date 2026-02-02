@@ -45,7 +45,9 @@ jobs:
         setup-command: gcc main.c -o test
         command: "./test 6613266 Gatuex 6613269 Ozone"
         input: ''
-        expected-output: "6613266 Gatuex \n6613269 Ozone"
+        expected-output: |-
+          6613266 Gatuex
+          6613269 Ozone
         comparison-method: contains
         timeout: 10
         max-score: 10
