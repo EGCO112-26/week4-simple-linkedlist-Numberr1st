@@ -48,7 +48,7 @@ int main(int argc, const char * argv[]) {
     StudentPtr head = NULL;
     
     // Check if we have arguments (argc must be odd: program_name + pairs of id/name)
-    if (argc < 3 || argc % 2 == 0) {
+    if (argc % 2 == 0) {
         printf("Usage: %s <student_id> <name> [<student_id> <name> ...]\n", argv[0]);
         return 1;
     }
